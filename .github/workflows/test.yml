@@ -1,0 +1,22 @@
+name: python-github-actions
+
+on: [pull_request]
+jobs :
+  check-PR-tests:
+  
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ["3.10", "3.11", "3.12"]
+
+    steps:
+      - name: Checkout to the runner
+        uses: actions/checkout@v4 #Give acces to the runner
+      - name: Setup Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v4
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Running tests for python version ${{ matrix.python-version }}
+        run:
+          pip install pytest pytest-cov
+          pytest test_calc.py
